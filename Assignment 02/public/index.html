@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Chat von ...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      box-sizing: border-box;
+      font: 16px Helvetica, Arial;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      background-color: #ffcd45;
+      height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      max-width: 1000px;
+      padding: 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+    }
+
+    @media only screen and (min-width: 1000px) {
+      .container {
+        border-left: solid black 2px;
+        border-right: solid black 2px;
+      }
+    }
+
+    header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: #ffcd45;
+      padding: 0 10px;
+    }
+
+    header h1 {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .userCount {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .userCount span {
+      margin-right: 5px;
+    }
+
+    .buttons {
+      display: flex;
+    }
+
+    .buttons button {
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      border: none;
+      background: none;
+    }
+
+    .buttons button:hover {
+      background-color: gray;
+    }
+
+    #messages {
+      overflow: auto;
+      flex: 1;
+    }
+
+    .chat_input {
+      height: 50px;
+      display: flex;
+      background-color: #ffcd45;
+      padding: 5px;
+    }
+
+    .chat_input input#input {
+      border: 0;
+      padding: 10px 20px;
+      flex: 1;
+      background-color: white;
+      border-radius: 50px;
+      margin-right: 5px;
+    }
+
+    .chat_input input[type=submit] {
+      background: royalblue;
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      font-size: 24px;
+      border-radius: 50px;
+    }
+
+    .chat_input input#input:focus {
+      outline: none !important;
+      border: 2px solid royalblue;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #messages li {
+      padding: 5px 10px;
+    }
+
+    #messages li:nth-child(odd) {
+      background: #eee;
+    }
+
+    #messages li:nth-child(even) {
+      background: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <header>
+      <h1>CHAT</h1>
+      <div class="userCount">
+        <span id="userNum">0</span> User(s) connected.
+      </div>
+      <div class="buttons">
+        <button id="applause">👏</button>
+        <button id="lol">😄</button>
+        <button id="tears">😢</button>
+        <button id="love">😍</button>
+      </div>
+    </header>
+
+    <ul id="messages"></ul>
+    <form action="" id="form">
+      <div class="chat_input">
+        <input id="input" autocomplete="off" placeholder="Enter Message" />
+        <input type="submit" value="✉️" />
+      </div>
+
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    const messages = document.getElementById('messages');
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    const userNum = document.getElementById('userNum');
+
+    document.getElementById('applause').addEventListener("click", () => sendMessage('👏'));
+    document.getElementById('lol').addEventListener("click", () => sendMessage('😄'));
+    document.getElementById('tears').addEventListener("click", () => sendMessage('😢'));
+    document.getElementById('love').addEventListener("click", () => sendMessage('😍'));
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value) {
+        sendMessage(input.value);
+        input.value = '';
+      }
+    });
+
+    form.addEventListener('keyup', function (e) {
+      if (event.code === 'Enter') {
+        e.preventDefault();
+        if (input.value) {
+          sendMessage(input.value);
+          input.value = '';
+        }
+      }
+    });
+
+    function sendMessage(msg) {
+      socket.emit('chat message', msg);
+    }
+
+    socket.on('chat message', function (msg) {
+      var item = document.createElement('li');
+      item.textContent = msg;
+      messages.appendChild(item);
+    });
+
+    socket.on("user number", function (num) {
+      userNum.textContent = num;
+    })
+  </script>
+</body>
+
+</html>
