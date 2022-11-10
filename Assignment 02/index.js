@@ -3,7 +3,6 @@ const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const port = 5555;
-const path = require("path");
 
 app.use(express.static("public"));
 let users = [];
