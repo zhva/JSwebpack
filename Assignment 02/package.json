@@ -4,7 +4,7 @@
   "description": "Initializing project witn npm",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest ./*test.js",
     "lint": "eslint .--ext=.ts",
     "start": "node index.js"
   },
@@ -15,5 +15,8 @@
     "express": "^4.18.2",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1"
   }
 }
