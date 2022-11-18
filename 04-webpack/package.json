@@ -4,7 +4,8 @@
   "description": "In this assignment you will learn to configure and use webpack as a bundler.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx webpack --mode=\"production\""
   },
   "author": "",
   "license": "ISC",
