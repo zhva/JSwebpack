@@ -1,0 +1,14 @@
+{
+  "name": "04-webpack",
+  "version": "1.0.0",
+  "description": "In this assignment you will learn to configure and use webpack as a bundler.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
