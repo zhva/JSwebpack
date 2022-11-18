@@ -1,0 +1,257 @@
+# Assignment 04-webpack
+
+In this assignment you will learn to configure and use webpack as a bundler.
+
+## Step 0: Initializing a project
+
+Create a new folder in your repo (**04-webpack**) and copy the files from this folder (`index.html`, `index.js`, `style.css` and `libs/lodash.js`).
+
+You can either open the `index.html` file directly in your browser or use a local server (e.g. Live Server for VSCode).
+
+Commit the initial step to your repo.
+
+## Step 1: Version Control
+
+Your lodash dependency should not be in your version control.
+
+Initialize npm in your project and install lodash.
+
+Update the URL in your `<script>` tag.
+
+Remove the lib folder and make sure `node_modules/` is not commited to your repo.
+
+Commit this step to your repo.
+
+## Step 2: First bundle
+
+Install `webpack` and `webpack-cli`. Keep in mind those are only used in development.
+
+Adapt your project structure to fit the webpack requirements.
+
+We need a `dist/` folder as well as a `src/` folder.
+
+```
+dist/
+|__index.html
+|__style.css
+src/
+|__index.js
+node_modules/...
+package.json
+package-lock.json
+.gitignore
+```
+
+Make sure you also update all URLs to this new structure. Webpack will create a `main.js` in your `dist/` folder. This file should be linked in your `<script>` tag.
+
+Build your first bundle using `npx webpack`.
+
+Commit this step to your repo.
+
+## Step 3: Dependency graph
+
+After building for the first time we see that lodash is not included in the bundle.
+
+Make sure the whole lodash library is added to the dependency graph and then rebuild the project.
+
+Make sure your project still works as intended.
+
+Commit this step to your repo.
+
+## Step 4: Production mode
+
+Building with production mode reduces the file size significantly. Make a new build with the `--mode="production"` option.
+
+Make sure everything still works as intended.
+
+Optimize your build even more by only loading the `join()` function from lodash. Observe how the files size changes.
+
+Other devs should be able to run a production build using the **`build` script**.
+
+Commit this step to your repo.
+
+## Step 5: CSS Loader
+
+Our styling should also by included in our bundle. Adapt your webpack config to load and insert css. Don't forget to install the needed loaders first.
+
+webpack.config.js
+```js
+const path = require("path");
+
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "main.js",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+        ],
+      },
+    ],
+  },
+};
+```
+
+Move your css file to the source folder (ideally add a `css` or `styling` folder first) and load the file in your index.js. Your index.html doesn't need the `<link>` tag anymore?
+
+Make a new build and check if the styling is still applied.
+
+Commit this step to your repo.
+
+## Step 6: SCSS Loader
+
+SCSS is more practical than pure CSS. Adapt webpack to load and convert SCSS into CSS. Update filenames and imports.
+
+webpack.config.js:
+
+```js
+const path = require("path");
+
+module.exports = {
+  ...,
+  module: {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
+    ],
+  },
+};
+
+```
+
+You can test this step by adding for example a scss variable to your styling:
+
+```scss
+$body-color: rgb(51, 53, 125);
+
+body {
+  ...
+  background: $body-color;
+  ..
+```
+
+Make a build and check the output.
+
+Commit this step to your repo.
+
+## Step 7: Dev Server
+
+Rebuilding and relaoding is tiresome. Install the webpack dev server in your project for hot reloading.
+
+webpack.config.js:
+
+```js
+const path = require("path");
+
+module.exports = {
+  ...,
+  devServer: {
+    static: "./dist",
+  },
+};
+
+```
+
+Make sure other devs can start the server using the **`start` script**.
+
+Check if the website is reloaded (on localhost:8080) if you change the code (JS and styling).
+
+Commit this step to your repo.
+
+## Step 8: Image Loading
+
+Add a image of your choosing to the project. Make sure it gets added to the output bundle.
+
+webpack.config.js:
+
+```js
+const path = require("path");
+
+module.exports = {
+  ...,
+  module: {
+    rules: [
+      ...,
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: "asset/resource",
+      },
+    ],
+  },
+};
+
+```
+
+You might need to restart the dev server because you changed the .
+
+Commit this step to your repo.
+
+## Step 9: HTML Plugin
+
+A webpack exercise would not be complete without install one plugin.
+
+Make sure the `index.html` file is also generated by webpack. Place the template file in the `src/` folder.
+
+webpack.config.js:
+
+```js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
+
+module.exports = {
+  ...,
+  plugins: [
+   new HtmlWebpackPlugin({
+     template: "src/index.html",
+   }),
+ ],
+};
+
+```
+
+Adapt the output settings so that the bundle filename is a hash of the file content for better caching.
+
+webpack.config.js:
+
+```js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
+
+module.exports = {
+  ...,
+  output: {
+    ...
+    filename: "[name].[contenthash].js",
+  },
+  ...
+}
+```
+
+Make a final build to make sure every works as expected.
+
+Commit this step to your repo.
+
+## Step 10: Deploy your output
+
+Upload the `dist/` folder content to a server. I suggest either on your MMT webspace or use the "Deploy manually" functionality by Netlify. Or use something else. Who am I to tell you.
+
+Goal: Link your deployed website and the new repo folder in the wiki.
+
+## ...and your done!

@@ -1,0 +1,37 @@
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100%;
+
+  background: rgb(58, 58, 58);
+  color: #fff;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+p {
+  margin: 0;
+}
+
+span {
+  color: rgb(155, 155, 155);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+div {
+  margin: 1rem;
+
+  font-weight: bold;
+  color:rgb(43, 226, 186)
+}
