@@ -1,4 +1,5 @@
 import join from "lodash/join";
+import "./css/style.css";
 
 function component() {
   const element = document.createElement("div");
